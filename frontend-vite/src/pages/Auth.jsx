@@ -1,9 +1,12 @@
-import React from 'react';
+// You might not need this if logic is handled in LoginRegister.
+// Placeholder for potential auth helpers or wrapper.
 
-const Auth = () => (
-  <div className="text-center mt-10">
-    <p>This page is handled via Login/Register combined page.</p>
-  </div>
-);
+const Auth = () => {
+  return (
+    <div>
+      <p>Auth helper component or logic placeholder</p>
+    </div>
+  );
+};
 
 export default Auth;

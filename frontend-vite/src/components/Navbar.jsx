@@ -1,16 +1,34 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
-    <nav className="bg-blue-600 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="font-bold text-xl">Pet Adoption</Link>
-        <div className="space-x-4">
-          <Link to="/dashboard" className="hover:underline">Dashboard</Link>
-          <Link to="/add-pet" className="hover:underline">Add Pet</Link>
-          <Link to="/login" className="hover:underline">Login / Register</Link>
-        </div>
+    <nav className="bg-blue-500 text-white p-4 flex justify-between">
+      <div>
+        <Link to="/" className="mr-4 font-bold">PetAdopt</Link>
+        {token && (
+          <Link to="/dashboard" className="mr-4">Dashboard</Link>
+        )}
+      </div>
+      <div>
+        {!token ? (
+          <>
+            <Link to="/login" className="mr-2">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        ) : (
+          <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">
+            Logout
+          </button>
+        )}
       </div>
     </nav>
   );

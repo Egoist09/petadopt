@@ -8,11 +8,9 @@ const PetCard = ({ pet, onAdopted }) => {
     try {
       await axiosInstance.post('/pets', {
         name: pet.name,
-        image: pet.image,
+        imageUrl: pet.imageUrl, // ✅ Send imageUrl
       });
-      // ✅ Call parent to remove pet from UI
       onAdopted(pet._id);
-      // ✅ Show toast
       showToast(`You adopted ${pet.name}!`, 'success');
     } catch (err) {
       console.error('Adoption failed', err);
@@ -33,7 +31,7 @@ const PetCard = ({ pet, onAdopted }) => {
   return (
     <div className="bg-white rounded shadow p-4 flex flex-col items-center">
       <img 
-        src={pet.image} 
+        src={pet.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image'} 
         alt={pet.name} 
         className="w-full h-48 object-cover rounded mb-2" 
       />

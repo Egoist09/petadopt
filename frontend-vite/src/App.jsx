@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import PetCard from './components/PetCard';
+import axiosInstance from './api/axiosInstance';
 
 import Home from './pages/Home';
 import LoginRegister from './pages/LoginRegister';
 import Dashboard from './pages/Dashboard';
 import AddPet from './pages/AddPet';
 
+// ...
 const App = () => {
-  // Example static pet data
-  const pets = [
-    { id: 1, name: 'Buddy', image: 'https://placedog.net/400/300?id=1' },
-    { id: 2, name: 'Luna', image: 'https://placedog.net/400/300?id=2' },
-    { id: 3, name: 'Charlie', image: 'https://placedog.net/400/300?id=3' },
-    { id: 4, name: 'Max', image: 'https://placedog.net/400/300?id=4' },
-    { id: 5, name: 'Bella', image: 'https://placedog.net/400/300?id=5' },
-    { id: 6, name: 'Daisy', image: 'https://placedog.net/400/300?id=6' },
-  ];
+  const [pets, setPets] = useState([]);
+
+  useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        const res = await axiosInstance.get('/pets');
+        setPets(res.data);
+      } catch (err) {
+        console.error('Failed to load pets', err);
+      }
+    };
+
+    fetchPets();
+  }, []);
+
+  const handlePetAdopted = (id) => {
+    setPets(prev => prev.filter(pet => pet._id !== id));
+  };
 
   return (
     <Router>
@@ -29,7 +40,7 @@ const App = () => {
             <Route path="/" element={
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {pets.map(pet => (
-                  <PetCard key={pet.id} pet={pet} />
+                  <PetCard key={pet._id} pet={pet} onAdopted={handlePetAdopted} />
                 ))}
               </div>
             } />
@@ -57,5 +68,4 @@ const App = () => {
     </Router>
   );
 };
-
 export default App;

@@ -8,7 +8,7 @@ const PetCard = ({ pet, onAdopted }) => {
     try {
       await axiosInstance.post('/pets', {
         name: pet.name,
-        imageUrl: pet.imageUrl, // ✅ Send imageUrl
+        imageUrl: pet.imageUrl,
       });
       onAdopted(pet._id);
       showToast(`You adopted ${pet.name}!`, 'success');
@@ -31,7 +31,7 @@ const PetCard = ({ pet, onAdopted }) => {
   return (
     <div className="bg-white rounded shadow p-4 flex flex-col items-center">
       <img 
-        src={pet.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image'} 
+        src={pet.imageUrl}  // ✅ Ensure you use imageUrl here
         alt={pet.name} 
         className="w-full h-48 object-cover rounded mb-2" 
       />
